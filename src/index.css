@@ -1,0 +1,50 @@
+body { 
+	background: url(images/city-dark.jpeg) no-repeat center center fixed;
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+  /*	animation: turn-on-the-light;
+	animation-duration: 5s;
+  	animation-fill-mode: forwards;
+	animation-timing-function: ease-in;
+*/  }
+
+/* @keyframes turn-on-the-light {
+	0% {
+		background: url(images/black.png) no-repeat center center fixed;
+	}
+	100% {
+		background: url(images/lightbulb.jpg) no-repeat center center fixed;
+	}
+} */
+
+/* html:focus {
+	background: url(images/lightbulb.jpg);
+} */
+
+.OpeningHeader {
+	color: white;
+	text-align: left;
+	font-family: 'Roboto', sans-serif;
+	font-weight: bold;
+	font-size: 3.9vw;
+	position: fixed;
+  	top: 8%;
+  	transform: translate(0%, -8%);
+  	margin: auto;
+  	margin-left: 2vw; 
+}
+
+.SubHeader {
+	color: white;
+	text-align: left;
+	font-family: 'Roboto', sans-serif;
+	font-weight: bold;
+	font-size: 3.5vw;
+	position: fixed;
+	top: 23%;
+	transform: translate(0%, -23%);
+	margin: auto;
+	margin-left: 2vw;
+}
