@@ -25,9 +25,13 @@ function TypewriterComponent (props) {
                     .typeString(props.string3)
                     .start();
             }}
+            onFin={(typewriter) => {
+                typewriter.stop();
+            }}
         />
     )
 }
+
 
 
 function App () {
@@ -42,9 +46,7 @@ function App () {
                     string3={subheader2}  
                 />
             </div>
-            {/* <div class='SubHeader'>
-                <TypewriterComponent string={subheader1} delay='5000' />
-            </div> */}
+           
         </div>
         )
     }
