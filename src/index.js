@@ -62,6 +62,7 @@ class App extends React.Component {
         const {score, time_online_throttled, time_online_no_throttling, time_offline_slow_hashing, time_offline_fast_hashing, warnings, suggestions} = this.state
         return (
             <div class='Container'>
+                <div class='Page'>
                     <div class='OpeningHeader'>
                         <TypewriterComponent 
                             string1={header1} 
@@ -74,9 +75,11 @@ class App extends React.Component {
                     <div class='Continue'>
                         Scroll to continue...
                     </div>
+                </div>
+                <div class='Page'>
                     <div class='DictionaryCheck'>
                         <input
-                            type='text'
+                            type='password'
                             value={this.state.password}
                             placeholder="password..."
                             onChange={this.onPassChange}
@@ -96,6 +99,7 @@ class App extends React.Component {
                             )}
                         </ul>
                     </div>
+                </div>
             </div>
             );
     }
