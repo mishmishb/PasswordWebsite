@@ -100,3 +100,10 @@ L33T_TABLE = {
 | i
 1 l
 | l
+
+
+
+
+rank + (dictionary_length * uppercase * l33t)
+
+rank + (dictionary_length * uppercase) + (dictionary_length * l33t)

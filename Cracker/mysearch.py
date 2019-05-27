@@ -11,7 +11,7 @@ def search(password, matches):
 	password_buffer = list(password)
 
 	for match in matches:
-		if (match['i'] and match['j']) not in used_entries:
+		if (match['i'] or match['j']) not in used_entries:
 			output.append(match)
 			for x in range(match['i'], match['j'] + 1):
 				password_buffer[x] = 'OUT'
