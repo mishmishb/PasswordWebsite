@@ -1,0 +1,102 @@
+testing - rank 5 - takes 5 guesses
+Testing - whole dictionary plus 5
+TESTING - (1.5 * whole dictionary) + 5
+testinG - (1.5 * whole dictionary) + 5
+
+tEsting
+teSting
+tesTing
+testIng
+testINg
+
+calculate number of ways of checking for capitals, e.g. going through in order of (2nd letter -> 4th letter -> 3rd letter -> 5th letter OR
+                                                                                   4th letter -> 4rd letter -> 2nd letter -> 5th letter)
+
+do nCk where n = length and k is the number of capitals
+
+This gets the number of ways k capitals can be positioned in n character word
+
+It would therefore take nCk checks through the dictionary to exhaust every option for positioning of k capitals
+in each word.
+
+Divide by 2 to get the average number of times you would need to run the check to get the right positioning of capitals
+
+Add this to 1.5 (would check first-capital, then all-capital and end-capital before trying these)
+
+Would need to progress through numbers of capitals - so before checking for 3 capitals you would presumably check
+all options for 2 capitals
+
+
+No Capital    -  RANK
+First Capital -  RANK  +  DICTIONARY_LENGTH
+All Capital   -  RANK  +  DICTIONARY_LENGTH  +  (DICTIONARY_LENGTH  *  1.5)  =  RANK  +  (DICTIONARY_LENGTH  *  2.5)
+End Capital   -  RANK  +  DICTIONARY_LENGTH  +  (DICTIONARY_LENGTH  *  1.5)  =  RANK  +  (DICTIONARY_LENGTH  *  2.5)
+One Capital   -  RANK  +  DICTIONARY_LENGTH  * (3  +  (LENGTH  /  2)
+Two Capital   -  RANK  +  (DICTIONARY_LENGTH  *  (3  +  LENGTH  +  (nCk(LENGTH, 2)  /  2)))
+Three Capital -  RANK  +  (DICTIONARY_LENGTH  *  ((3  +  LENGTH  +  nCk(LENGTH, 2))  +  (nCk(LENGTH, 3)  /  2)))
+
+
+for k in range(1, NUMBER_OF_CAPITALS + 1):
+    
+
+
+
+testing = 5    dictionary length = 10,000
+Testing = 10,005
+TESTING/testinG = 25,005
+teSTing = 120,005
+
+
+
+
+
+t3sTing
+
+test1ng
+
+number of letters that need to be checked is just the number of letters that can be replaced for a number or symbol
+each number needs to be checked a # of times based on how many potential swaps it has
+
+e.g. the 'e' in lemon would need to be checked for '3', '€', '£' 
+
+
+
+
+goes through every letter
+for each letter, it goes through every key,value
+
+go through key, value
+
+
+
+L33T_TABLE = {
+    'a': ['4', '@'],
+    'b': ['8'],
+    'c': ['(', '{', '[', '<'],
+    'e': ['3'],
+    'g': ['6', '9'],
+    'i': ['1', '!', '|'],
+    'l': ['1', '|', '7'],
+    'o': ['0'],
+    's': ['$', '5'],
+    't': ['+', '7'],
+    'x': ['%'],
+    'z': ['2'],
+}
+
+
+4 a
+@ a
+8 b
+( c
+{ c
+[ c
+< c
+3 e
+6 g
+9 g
+1 i
+! i
+| i
+1 l
+| l
