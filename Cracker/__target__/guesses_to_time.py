@@ -6,25 +6,25 @@ def display_time(seconds):
     year = month * 12
     century = year * 100
     if seconds < 1:
-         display_num, display_str = seconds, f'{seconds} seconds'
+         display_num, display_str = seconds, '%s seconds' % seconds
     if seconds < minute:
         base = round(seconds)
-        display_num, display_str = base, f'{base} second'
+        display_num, display_str = base, '%s second' % base
     elif seconds < hour:
         base = round(seconds / minute)
-        display_num, display_str = base, f'{base} minute'
+        display_num, display_str = base, '%s minute' % base
     elif seconds < day:
         base = round(seconds / hour)
-        display_num, display_str = base, f'{base} hour'
+        display_num, display_str = base, '%s hour' % base
     elif seconds < month:
         base = round(seconds / day)
-        display_num, display_str = base, f'{base} day'
+        display_num, display_str = base, '%s day' % base
     elif seconds < year:
         base = round(seconds / month)
-        display_num, display_str = base, f'{base} month'
+        display_num, display_str = base, '%s month' % base
     elif seconds < century:
         base = round(seconds / year)
-        display_num, display_str = base, f'{base} year'
+        display_num, display_str = base, '%s year' % base
     else:
         display_num, display_str = None, 'centuries'
 

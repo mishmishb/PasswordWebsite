@@ -25,10 +25,12 @@ if __name__ == '__main__':
 
     end = time()
 
-    print(results[0])
+    print('No of guesses:\t', results[0])
+    print('Sequence:\t')
     for i in results[1]:
     	print(i, '\n')
 
+    print('ctime:\t')
     for k,v in results[2].items():
     	print(k, v)
 
