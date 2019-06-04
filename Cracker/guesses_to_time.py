@@ -22,11 +22,12 @@ def display_time(seconds):
     elif seconds < year:
         base = round(seconds / month)
         display_num, display_str = base, f'{base} month'
-    elif seconds < century:
+    #elif seconds < century:
+    else:
         base = round(seconds / year)
         display_num, display_str = base, f'{base} year'
-    else:
-        display_num, display_str = None, 'centuries'
+    #else:
+        #display_num, display_str = None, 'centuries'
 
     if display_num and display_num != 1:
         display_str += 's'
@@ -44,10 +45,10 @@ def calc_time(guesses):
 
     offline_fast_hash = display_time(guesses / 1e10)
 
-    times_to_crack = {'Throttled online attack': online_throttled, \
-                      'Unthrottled online attack: ': online_unthrottled, \
-                      'Slow hash offline attack: ': offline_slow_hash, \
-                      'Fast hash  offline attack: ': offline_fast_hash
+    times_to_crack = {'Throttled online attack:\t': online_throttled, \
+                      'Unthrottled online attack:\t': online_unthrottled, \
+                      'Slow hash offline attack:\t': offline_slow_hash, \
+                      'Fast hash  offline attack:\t': offline_fast_hash
                       }
 
     return times_to_crack

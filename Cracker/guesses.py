@@ -25,12 +25,12 @@ def nCk(n, k):
 
 def guess_calculator(password):
 
-    guesses = 0
+    guesses = 1
     for match in password:
         if match['pattern'] == 'dictionary':
-            guesses += dictionary_guess(match, match['dictionary_name'])
+            guesses *= dictionary_guess(match, match['dictionary_name'])
         else:
-            guesses += bruteforce_guesses(match)
+            guesses *= bruteforce_guesses(match)
 
     return guesses
 
@@ -160,7 +160,8 @@ if __name__ == '__main__':
 
     #print(l33t_character_guesses({'pattern': 'dictionary', 'i': 3, 'j': 7, 'token': 'L3m0n', 'matched_word': 'lemon', 'matched_length': 5, 'rank': 1686, 'dictionary_name': 'surnames', 'l33t': True, 'sub': {'3': 'e', '4': 'a'}, 'sub_display': '3 -> e'}))
 
-    print(bruteforce_guesses({'token': 'hello'}))
+    inp = input('Password: ')
+    print(bruteforce_guesses({'token': inp}))
 
 
 
