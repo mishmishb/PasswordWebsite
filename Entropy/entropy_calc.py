@@ -60,8 +60,8 @@ def entropy():
     if re.search('\d', inp):
         set_size += 10
 
-    if re.search('/[$-/:-?{-~!"^_`\[\]]/', inp):
-        set_size += 29
+    if re.search('./<>?;:"\'`!@#$%^&*()\[\]{}_+=|\\-', inp):
+        set_size += 33
 
     length = len(inp)
 

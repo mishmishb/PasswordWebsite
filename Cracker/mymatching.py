@@ -43,7 +43,7 @@ def omnimatch(password, _ranked_dictionaries=RANKED_DICTIONARIES):
     ]:
         matches.extend(matcher(password, _ranked_dictionaries=_ranked_dictionaries))
 
-    return sorted(matches, key=lambda x: x['matched_length'], reverse=True)
+    return sorted(matches, key=lambda x: (x['matched_length'], not x['l33t'], -x['rank']), reverse=True)
 
 def dictionary_match(password, _ranked_dictionaries=RANKED_DICTIONARIES):
     matches = []

@@ -125,7 +125,7 @@ def uppercase_character_loops(match):
 
 
 def l33t_character_loops(match):
-    if not match.get('l33t', False):
+    if match['token'].lower() == match['matched_word']:
         return 0
 
     variations = 1

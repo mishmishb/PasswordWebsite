@@ -8,6 +8,7 @@ def mystrengthtool(password):
     
     ranked_dictionaries = mymatching.produce_ranked_dict()
     matches = mymatching.omnimatch(password, ranked_dictionaries)
+    print(matches)
     sequence = mysearch.search(password, matches)
     no_of_guesses = guesses.guess_calculator(sequence)
     ctime = guesses_to_time.calc_time(no_of_guesses)
