@@ -60,9 +60,8 @@ def bruteforce_guesses(match):
             search_space += 33
             symbol = True
 
-    entropy = math.log2(search_space ** len(sequence))
 
-    brute_guess = round((2 ** entropy) / 2)
+    brute_guess = round((search_space ** len(sequence)) / 2)
 
     return brute_guess
 
