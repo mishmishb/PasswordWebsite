@@ -1,41 +1,44 @@
-def display_time(seconds):
-    minute = 60
-    hour = minute * 60
-    day = hour * 24
-    month = day * 31
-    year = month * 12
-    century = year * 100
-    if seconds < 1:
-         display_num, display_str = seconds, f'{seconds} seconds'
-    if seconds < minute:
-        base = round(seconds)
-        display_num, display_str = base, f'{base} second'
-    elif seconds < hour:
-        base = round(seconds / minute)
-        display_num, display_str = base, f'{base} minute'
-    elif seconds < day:
-        base = round(seconds / hour)
-        display_num, display_str = base, f'{base} hour'
-    elif seconds < month:
-        base = round(seconds / day)
-        display_num, display_str = base, f'{base} day'
-    elif seconds < year:
-        base = round(seconds / month)
-        display_num, display_str = base, f'{base} month'
-    #elif seconds < century:
-    else:
-        base = round(seconds / year)
-        display_num, display_str = base, f'{base} year'
-    #else:
-        #display_num, display_str = None, 'centuries'
+''' Takes guesses as an input and convert these to time based on
+different types of cracking. '''
 
-    if display_num and display_num != 1:
+def display_time(seconds):
+    ''' Takes seconds as input and converts this to a string based
+    on the number of seconds. '''
+
+    minute = 60
+    hour = 3600
+    day = 86400
+    month = 2678400
+    year = 32140800
+    if seconds < minute:
+        rounded = round(seconds)
+        display_str = f'{rounded} second'
+    elif seconds < hour:
+        rounded = round(seconds / minute)
+        display_str = f'{rounded} minute'
+    elif seconds < day:
+        rounded = round(seconds / hour)
+        display_str = f'{rounded} hour'
+    elif seconds < month:
+        rounded = round(seconds / day)
+        display_str = f'{rounded} day'
+    elif seconds < year:
+        rounded = round(seconds / month)
+        display_str = f'{rounded} month'
+    else:
+        rounded = round(seconds / year)
+        display_str = f'{rounded} year'
+
+    if display_str.split(' ')[0] != '0':
         display_str += 's'
 
     return display_str
 
 
 def calc_time(guesses):
+    ''' Takes the number of guesses and returns the amount of time
+    it would take to make this many calculations based on different
+    situations. '''
 
     online_throttled = display_time(guesses / (1 / 36))
 
@@ -49,6 +52,6 @@ def calc_time(guesses):
                       'Unthrottled online attack:\t': online_unthrottled, \
                       'Slow hash offline attack:\t': offline_slow_hash, \
                       'Fast hash  offline attack:\t': offline_fast_hash
-                      }
+                     }
 
     return times_to_crack
