@@ -132,16 +132,3 @@ def my_l33t_match(password, _ranked_dictionaries=RANKED_DICTIONARIES,
     matches = [match for match in matches if len(match['token']) > 1]
 
     return sorted(matches, key=lambda x: (x['i'], x['j']))
-
-
-if __name__ == '__main__':
-
-    inp = input('Password: ')
-
-    start = time()
-    
-    print(omnimatch(inp, produce_ranked_dict()))
-    
-    end = time()
-
-    print(end - start, 'seconds')

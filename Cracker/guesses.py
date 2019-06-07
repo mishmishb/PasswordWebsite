@@ -8,20 +8,14 @@ US_TV_AND_FILM = 39070
 PASSWORDS = 47023
 
 
-def nCk(n, k):
-    """http://blog.plover.com/math/choose.html"""
-    if k > n:
-        return 0
-    if k == 0:
-        return 1
+def nCk(n, r):
 
-    r = 1
-    for d in range(1, k + 1):
-        r *= n
-        r /= d
-        n -= 1
-
-    return r
+    r = min(r, n-r)
+    if r == 0: return 1
+    res = 1
+    for k in range(1,r+1):
+        res = res*(n-k+1)/k
+    return res
 
 def guess_calculator(password):
 
@@ -59,7 +53,6 @@ def bruteforce_guesses(match):
         elif(chr in potential_symbols and symbol == False):
             search_space += 33
             symbol = True
-
 
     brute_guess = round((search_space ** len(sequence)) / 2)
 
@@ -107,12 +100,9 @@ def uppercase_character_loops(match):
         if letter.isupper():
             uppercase_count += 1
 
-    if (word[0].isupper() and uppercase_count == 1):
+    if (word[0].isupper() and uppercase_count == 1) or word.isupper():
         return 1
     
-    if ((word[-1].isupper() and uppercase_count == 1) or word.isupper()):
-        return 2.5
-
     dictionary_loops = 0
     for k in range(1, uppercase_count + 1):
         if k == uppercase_count:
@@ -124,43 +114,25 @@ def uppercase_character_loops(match):
 
 
 def l33t_character_loops(match):
-    if match['token'].lower() == match['matched_word']:
+    token_lower = match['token'].lower()
+    if token_lower == match['matched_word']:
         return 0
 
-    variations = 1
+    dictionary_loops = 1
 
-    for subbed, unsubbed in match['sub'].items():
-        # lower-case match.token before calculating: capitalization shouldn't
-        # affect l33t calc.
-        chrs = list(match['token'].lower())
-        S = sum(1 for chr in chrs if chr == subbed)
-        U = sum(1 for chr in chrs if chr == unsubbed)
-        if S == 0 or U == 0:
-            # for this sub, password is either fully subbed (444) or fully
-            # unsubbed (aaa) treat that as doubling the space (attacker needs
-            # to try fully subbed chars in addition to unsubbed.)
-            variations *= 2
+    for l33t, original in match['sub'].items():
+        l33t_count = token_lower.count(l33t)
+        original_count = token_lower.count(original)
+
+        if 0 in (l33t_count, original_count):
+            dictionary_loops *= 2
         else:
-            # this case is similar to capitalization:
-            # with aa44a, U = 3, S = 2, attacker needs to try unsubbed + one
-            # sub + two subs
-            p = min(U, S)
-            possibilities = 0
-            for i in range(1, p + 1):
-                possibilities += nCk(U + S, i)
-            variations *= possibilities
+            potential_swaps = 0
+            for i in range(1, min(l33t_count, original_count) + 1):
+                potential_swaps += nCk(l33t_count + original_count, i)
+            dictionary_loops *= potential_swaps
 
-    return variations
-
-
-
-if __name__ == '__main__':
-
-
-    #print(l33t_character_guesses({'pattern': 'dictionary', 'i': 3, 'j': 7, 'token': 'L3m0n', 'matched_word': 'lemon', 'matched_length': 5, 'rank': 1686, 'dictionary_name': 'surnames', 'l33t': True, 'sub': {'3': 'e', '4': 'a'}, 'sub_display': '3 -> e'}))
-
-    inp = input('Password: ')
-    print(bruteforce_guesses({'token': inp}))
+    return dictionary_loops
 
 
 
