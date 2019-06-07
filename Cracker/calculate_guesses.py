@@ -2,13 +2,14 @@
 based on dictionary word ranks, uppercase and l33t swaps, and password
 entropy for brute-force sections of the password. '''
 
+from frequency_lists import FREQUENCY_LISTS
 
-MALE_NAMES = 1219
-FEMALE_NAMES = 4275
-ENGLISH_WIKIPEDIA = 100000
-SURNAMES = 88799
-US_TV_AND_FILM = 39070
-PASSWORDS = 47023
+MALE_NAMES = len(FREQUENCY_LISTS['male_names'])
+FEMALE_NAMES = len(FREQUENCY_LISTS['female_names'])
+ENGLISH_WIKIPEDIA = len(FREQUENCY_LISTS['english_wikipedia'])
+SURNAMES = len(FREQUENCY_LISTS['surnames'])
+US_TV_AND_FILM = len(FREQUENCY_LISTS['us_tv_and_film'])
+PASSWORDS = len(FREQUENCY_LISTS['passwords'])
 
 
 def combination_count(n, r):
