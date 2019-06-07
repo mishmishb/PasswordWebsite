@@ -3,9 +3,9 @@ and the function for running this and presenting the data. '''
 
 from time import time
 
-import mymatching
-import mysearch
-import guesses
+import word_matching
+import find_sequence
+import calculate_guesses
 import guesses_to_time
 
 
@@ -16,10 +16,10 @@ def mystrengthtool(input_password):
     '''
 
 
-    ranked_dictionaries = mymatching.produce_ranked_dict()
-    matches = mymatching.omnimatch(input_password, ranked_dictionaries)
-    sequence = mysearch.search(input_password, matches)
-    no_of_guesses = guesses.guess_calculator(sequence)
+    ranked_dictionaries = word_matching.produce_ranked_dict()
+    matches = word_matching.omnimatch(input_password, ranked_dictionaries)
+    sequence = find_sequence.search(input_password, matches)
+    no_of_guesses = calculate_guesses.guess_calculator(sequence)
     ctime = guesses_to_time.calc_time(no_of_guesses)
     return [no_of_guesses, sequence, ctime]
 
