@@ -145,7 +145,7 @@ def l33t_character_loops(match):
     # figures out how many times the tool would need to loop through the
     # dictionaries to find the right combination
     dictionary_loops = 0
-    for k in range(1, potential_swaps + 1):
+    for k in range(1, len(match['swap']) + 1):
         if k == potential_swaps:
             dictionary_loops += (combination_count(potential_swaps, k) / 2)
         else:
