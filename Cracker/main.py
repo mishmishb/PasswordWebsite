@@ -16,9 +16,9 @@ def mystrengthtool(input_password):
     '''
 
 
-    ranked_dictionaries = word_extraction.produce_ranked_dict()
-    extracted_words = word_extraction.omnimatch(input_password, ranked_dictionaries)
-    sequence = find_sequence.search(input_password, extracted_words)
+    ranked_wordlists = word_extraction.dictionary_ranker()
+    extracted_words = word_extraction.word_finder(input_password, ranked_wordlists)
+    sequence = find_sequence.make_sequence(input_password, extracted_words)
     no_of_guesses = calculate_guesses.guess_calculator(sequence)
     ctime = guesses_to_time.calc_time(no_of_guesses)
     return [no_of_guesses, sequence, ctime]

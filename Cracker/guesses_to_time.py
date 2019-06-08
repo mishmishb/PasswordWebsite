@@ -2,37 +2,31 @@
 different types of cracking. '''
 
 def display_time(seconds):
-    ''' Takes seconds as input and converts this to a string based
-    on the number of seconds. '''
+    ''' Converts seconds into the most easily
+    understandable time format. '''
+    minutes = seconds / 60
+    hours = minutes / 60
+    days = hours / 24
+    months = days / 31
+    years = months / 12
 
-    minute = 60
-    hour = 3600
-    day = 86400
-    month = 2678400
-    year = 32140800
-    if seconds < minute:
-        rounded = round(seconds)
-        display_str = f'{rounded} second'
-    elif seconds < hour:
-        rounded = round(seconds / minute)
-        display_str = f'{rounded} minute'
-    elif seconds < day:
-        rounded = round(seconds / hour)
-        display_str = f'{rounded} hour'
-    elif seconds < month:
-        rounded = round(seconds / day)
-        display_str = f'{rounded} day'
-    elif seconds < year:
-        rounded = round(seconds / month)
-        display_str = f'{rounded} month'
+    if seconds < 60:
+        readable_time = f'{round(seconds)} second'
+    elif minutes < 60:
+        readable_time = f'{round(minutes)} minute'
+    elif hours < 24:
+        readable_time = f'{round(hours)} hour'
+    elif days < 31:
+        readable_time = f'{round(days)} day'
+    elif months < 12:
+        readable_time = f'{round(months)} month'
     else:
-        rounded = round(seconds / year)
-        display_str = f'{rounded} year'
+        readable_time = f'{round(years)} year'
 
-    if display_str.split(' ')[0] != '0':
-        display_str += 's'
+    if readable_time.split(' ')[0] != '1':
+        readable_time += 's'
 
-    return display_str
+    return readable_time
 
 
 def calc_time(guesses):

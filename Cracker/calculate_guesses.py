@@ -2,15 +2,7 @@
 based on dictionary word ranks, uppercase and l33t swaps, and password
 entropy for brute-force sections of the password. '''
 
-from frequency_lists import FREQUENCY_LISTS
-
-MALE_NAMES = len(FREQUENCY_LISTS['male_names'])
-FEMALE_NAMES = len(FREQUENCY_LISTS['female_names'])
-ENGLISH_WIKIPEDIA = len(FREQUENCY_LISTS['english_wikipedia'])
-SURNAMES = len(FREQUENCY_LISTS['surnames'])
-US_TV_AND_FILM = len(FREQUENCY_LISTS['us_tv_and_film'])
-PASSWORDS = len(FREQUENCY_LISTS['passwords'])
-
+from data import FREQUENCY_LISTS, L33T_CHARACTERS
 
 def combination_count(n, r):
     ''' Efficient combinations counter from https://stackoverflow.com/a/44600243 '''
@@ -29,8 +21,8 @@ def guess_calculator(password):
 
     guesses = 1
     for match in password:
-        if match['pattern'] == 'dictionary':
-            guesses *= dictionary_guess(match, match['dictionary_name'])
+        if match['pattern_type'] == 'dictionary':
+            guesses *= dictionary_guess(match, match['word_list'])
         else:
             guesses *= bruteforce_guesses(match)
 
@@ -50,8 +42,9 @@ def bruteforce_guesses(match):
     potential_symbols = r'!"£$€%^&*()-_=+[]{}#~\'@/?.>,<|`¬'
     search_space = 0
 
-    sequence = match['token']
+    sequence = match['input']
 
+    # Checks what character sets are in the string
     for character in sequence:
         if (character.islower() and low_alpha is False):
             search_space += 26
@@ -66,6 +59,7 @@ def bruteforce_guesses(match):
             search_space += 33
             symbol = True
 
+    # See function doc string
     brute_guess = round((search_space ** len(sequence)) / 2)
 
     return brute_guess
@@ -77,19 +71,9 @@ def dictionary_guess(match, dictionary_name):
     calculates any extra loops necessary due to checking for uppercase or l33t
     characters. '''
 
-    if dictionary_name == 'passwords':
-        dictionary_length = PASSWORDS
-    elif dictionary_name == 'english_wikipedia':
-        dictionary_length = ENGLISH_WIKIPEDIA
-    elif dictionary_name == 'us_tv_and_film':
-        dictionary_length = US_TV_AND_FILM
-    elif dictionary_name == 'male_names':
-        dictionary_length = MALE_NAMES
-    elif dictionary_name == 'female_names':
-        dictionary_length = FEMALE_NAMES
-    elif dictionary_name == 'surnames':
-        dictionary_length = SURNAMES
+    dictionary_length = len(FREQUENCY_LISTS[dictionary_name])
 
+    # Calculates any extra loops needed for uppercase or l33t characters
     upper_loops = uppercase_character_loops(match)
     l33t_loops = l33t_character_loops(match)
 
@@ -104,22 +88,30 @@ def uppercase_character_loops(match):
     combinations to estimate how many extra loops through the
     dictionary it would check to find the word. '''
 
-    word = match['token']
+    word = match['input']
 
+    # If the word countains no capital letters, return
     if word.islower():
         return 0
 
-    alpha_only = [chr for chr in word if chr.isalpha()]
+    # Extracts alpha characters
+    alpha_only = [a for a in word if a.isalpha()]
 
+    # Counts uppercase characters
     uppercase_count = 0
-
     for letter in alpha_only:
         if letter.isupper():
             uppercase_count += 1
 
+    # First check, after original, would be first letter Upper or all UPPER
     if (word[0].isupper() and uppercase_count == 1) or word.isupper():
         return 1
 
+    # Calculates loops based on needing to test all positions for
+    # previous number of capital letters
+    # e.g. to check for 2 capital letters, would need to check all
+    # positions for one capital letter, followed by half of the
+    # positions for 2 capital letters (on average)
     dictionary_loops = 0
     for k in range(1, uppercase_count + 1):
         if k == uppercase_count:
@@ -134,22 +126,29 @@ def l33t_character_loops(match):
     ''' Calculates the number of extra loops through the dictionaries
     are necessary for the amount of swaps in the word. '''
 
-    token_lower = match['token'].lower()
-    if token_lower == match['matched_word']:
+    token_lower = match['input'].lower()
+
+    # If input (ignoring case) matches the dictionary word, return
+    if token_lower == match['found_word']:
         return 0
 
-    dictionary_loops = 1
+    # Extracts alpha characters
+    alpha_only = [a for a in token_lower if a.isalpha()]
 
-    for l33t, original in match['sub'].items():
-        l33t_count = token_lower.count(l33t)
-        original_count = sum(token_lower.count(o) for o in original)
+    # Counts the number of characters in the word that either are already l33ted,
+    # or could be l33ted, to figure out how many permutations of l33ts the
+    # word has
+    potential_swaps = len([l for l in alpha_only if l in L33T_CHARACTERS.keys()]) \
+                    + len(match['swap'])
 
-        if 0 in (l33t_count, original_count):
-            dictionary_loops *= 2
+    # Once number of potential permutations for each word has been calculated
+    # figures out how many times the tool would need to loop through the
+    # dictionaries to find the right combination
+    dictionary_loops = 0
+    for k in range(1, potential_swaps + 1):
+        if k == potential_swaps:
+            dictionary_loops += (combination_count(potential_swaps, k) / 2)
         else:
-            potential_swaps = 0
-            for i in range(1, min(l33t_count, original_count) + 1):
-                potential_swaps += combination_count(l33t_count + original_count, i)
-            dictionary_loops *= potential_swaps
+            dictionary_loops += combination_count(potential_swaps, k)
 
     return dictionary_loops
