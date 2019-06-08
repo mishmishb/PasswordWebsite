@@ -19,10 +19,10 @@ def make_sequence(password, found_words):
     # sorted by word_extraction.py by length, whether they have
     # l33t characters, and their rank
     for word in found_words:
-        if word['i'] not in used_entries:
-            if word['j'] not in used_entries:
+        if word['start'] not in used_entries:
+            if word['end'] not in used_entries:
                 output.append(word)
-                for character in range(word['i'], word['j'] + 1):
+                for character in range(word['start'], word['end'] + 1):
                     # Once the space has been taken up, mark it as
                     # so, allowing the unused space to be treated
                     # as needing brute-force calculations
@@ -45,8 +45,8 @@ def make_sequence(password, found_words):
         if (value == 'OUT' and brute) or (position == position_help and brute):
             bf_word = ('').join(brute)
             output.append({
-                'i': brute_positions[0],
-                'j': brute_positions[-1],
+                'start': brute_positions[0],
+                'end': brute_positions[-1],
                 'pattern_type': 'bruteforce',
                 'input': bf_word,
                 'length': len(bf_word)
@@ -55,4 +55,4 @@ def make_sequence(password, found_words):
             brute_positions = []
 
 
-    return sorted(output, key=lambda x: x['i'])
+    return sorted(output, key=lambda x: x['start'])

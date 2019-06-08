@@ -46,16 +46,16 @@ def dictionary_finder(password, ranked_wordlists):
     # For each dictionary, checks each contiguous substring
     # for a match and returns some relevant information
     for name, word_list in ranked_wordlists.items():
-        for i in range(length):
-            for j in range(i, length):
-                if password_lower[i:j + 1] in word_list:
-                    word = password_lower[i:j + 1]
+        for start in range(length):
+            for end in range(start, length):
+                if password_lower[start:end + 1] in word_list:
+                    word = password_lower[start:end + 1]
                     rank = word_list[word]
                     found_words.append({
-                        'i': i,
-                        'j': j,
+                        'start': start,
+                        'end': end,
                         'pattern_type': 'dictionary',
-                        'input': password[i:j + 1],
+                        'input': password[start:end + 1],
                         'length': len(word),
                         'word_list': name,
                         'found_word': word,
@@ -78,9 +78,9 @@ def generate_l33t_list(password, l33t_list):
     for n_a in nonalpha:
         # Creates list of letters that might have been swapped
         # for a non-alpha character
-        letters = [k for k, v in l33t_list.items() if n_a in v]
-        if letters:
-            swaps[n_a] = letters
+        swapped_letters = [lettrs for lettrs, l33ts in l33t_list.items() if n_a in l33ts]
+        if swapped_letters:
+            swaps[n_a] = swapped_letters
 
     # Returns dictionary of the non-alpha characters and their
     # corresponding letters as per l33t_list
@@ -119,7 +119,7 @@ def l33t_finder(password, ranked_wordlists):
             # It isn't worth l33t swapping single characters, these
             # are better off being brute-forced
             if word['length'] > 1:
-                sequence = password[word['i']:word['j'] + 1]
+                sequence = password[word['start']:word['end'] + 1]
                 # If the sequence doesn't contain any l33t swaps, skip it
                 if sequence.lower() == word['found_word']:
                     continue
