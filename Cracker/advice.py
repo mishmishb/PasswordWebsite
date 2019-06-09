@@ -51,8 +51,7 @@ def general_advice(password, sequence, advice_dict):
                 )
             break
 
-    if advice_list:
-        advice_dict['General: '] = advice_list
+    advice_dict['General: '] = advice_list
 
     return advice_dict
 
