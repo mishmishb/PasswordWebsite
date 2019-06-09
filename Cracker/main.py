@@ -7,6 +7,7 @@ import word_extraction
 import find_sequence
 import calculate_guesses
 import guesses_to_time
+import advice
 
 
 def mystrengthtool(input_password):
@@ -20,14 +21,15 @@ def mystrengthtool(input_password):
     extracted_words = word_extraction.word_finder(input_password, ranked_wordlists)
     sequence = find_sequence.make_sequence(input_password, extracted_words)
     no_of_guesses = calculate_guesses.guess_calculator(sequence)
+    password_advice = advice.advice_generator(input_password, sequence)
     ctime = guesses_to_time.calc_time(no_of_guesses)
-    return [no_of_guesses, sequence, ctime]
+    return [no_of_guesses, sequence, password_advice, ctime]
 
 
 
 if __name__ == '__main__':
 
-    PASSWORD = input('Password: ')
+    PASSWORD = (input('Password: ')).replace(' ', '')
 
     START = time()
 
@@ -40,8 +42,12 @@ if __name__ == '__main__':
     for i in RESULTS[1]:
         print(i, '\n')
 
-    print('ctime:\t')
+    print('Advice:\t')
     for k, v in RESULTS[2].items():
+        print(k, v)
+
+    print('ctime:\t')
+    for k, v in RESULTS[3].items():
         print(k, v)
 
 

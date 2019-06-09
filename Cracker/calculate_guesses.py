@@ -20,17 +20,17 @@ def guess_calculator(password):
     bruteforce results. '''
 
     guesses = 1
-    for match in password:
-        if match['pattern_type'] == 'dictionary':
-            guesses *= dictionary_guess(match, match['word_list'])
+    for sequence in password:
+        if sequence['pattern_type'] == 'dictionary':
+            guesses *= dictionary_guesses(sequence, sequence['word_list'])
         else:
-            guesses *= bruteforce_guesses(match)
+            guesses *= bruteforce_guesses(sequence)
 
-    return guesses
+    return int(guesses)
 
 
 
-def bruteforce_guesses(match):
+def bruteforce_guesses(sequence):
     ''' Works out which sets are involved in the word and performs an entropy
     calculation based on https://www.pleacher.com/mp/mlessons/algebra/entropy.html
     The entropy step is skipped as we just need the number of guesses. '''
@@ -40,33 +40,46 @@ def bruteforce_guesses(match):
     number = False
     symbol = False
     potential_symbols = r'!"£$€%^&*()-_=+[]{}#~\'@/?.>,<|`¬'
-    search_space = 0
+    set_size = 0
 
-    sequence = match['input']
+    input_string = sequence['input']
 
     # Checks what character sets are in the string
-    for character in sequence:
+    for character in input_string:
         if (character.islower() and low_alpha is False):
-            search_space += 26
+            set_size += 26
             low_alpha = True
         elif (character.isupper() and upper_alpha is False):
-            search_space += 26
+            set_size += 26
             upper_alpha = True
         elif (character.isdecimal() and number is False):
-            search_space += 10
+            set_size += 10
             number = True
         elif(character in potential_symbols and symbol is False):
-            search_space += 33
+            set_size += 33
             symbol = True
 
     # See function doc string
-    brute_guess = round((search_space ** len(sequence)) / 2)
+    brute_guess = round((set_size ** len(input_string)) / 2)
+
+    
+    space = []
+    if low_alpha is True:
+        space.append('lowercase')
+    if upper_alpha is True:
+        space.append('uppercase')
+    if number is True:
+        space.append('number')
+    if symbol is True:
+        space.append('symbol')
+
+    sequence['character_space'] = space
 
     return brute_guess
 
 
 
-def dictionary_guess(match, dictionary_name):
+def dictionary_guesses(sequence, dictionary_name):
     ''' Dictionary master function, checks which dictionary the word comes from,
     calculates any extra loops necessary due to checking for uppercase or l33t
     characters. '''
@@ -74,21 +87,23 @@ def dictionary_guess(match, dictionary_name):
     dictionary_length = len(FREQUENCY_LISTS[dictionary_name])
 
     # Calculates any extra loops needed for uppercase or l33t characters
-    upper_loops = uppercase_character_loops(match)
-    l33t_loops = l33t_character_loops(match)
+    upper_loops = uppercase_character_loops(sequence)
+    l33t_loops = l33t_character_loops(sequence)
 
-    guesses = match['rank'] + (dictionary_length * upper_loops) \
+    guesses = sequence['rank'] + (dictionary_length * upper_loops) \
                             + (dictionary_length * l33t_loops)
+
+    sequence['guesses'] = guesses
 
     return guesses
 
 
-def uppercase_character_loops(match):
+def uppercase_character_loops(sequence):
     ''' Checks each alpha character for uppercases and uses
     combinations to estimate how many extra loops through the
     dictionary it would check to find the word. '''
 
-    word = match['input']
+    word = sequence['input']
 
     # If the word countains no capital letters, return
     if word.islower():
@@ -105,6 +120,7 @@ def uppercase_character_loops(match):
 
     # First check, after original, would be first letter Upper or all UPPER
     if (word[0].isupper() and uppercase_count == 1) or word.isupper():
+        sequence['uppercase_style'] = 'First or ALL' 
         return 1
 
     # Calculates loops based on needing to test all positions for
@@ -119,17 +135,19 @@ def uppercase_character_loops(match):
         else:
             dictionary_loops += combination_count(len(alpha_only), k)
 
+    sequence['upppercase_style'] = 'Good'        
+
     return dictionary_loops
 
 
-def l33t_character_loops(match):
+def l33t_character_loops(sequence):
     ''' Calculates the number of extra loops through the dictionaries
     are necessary for the amount of swaps in the word. '''
 
-    token_lower = match['input'].lower()
+    token_lower = sequence['input'].lower()
 
     # If input (ignoring case) matches the dictionary word, return
-    if token_lower == match['found_word']:
+    if token_lower == sequence['found_word']:
         return 0
 
     # Extracts alpha characters
@@ -139,13 +157,13 @@ def l33t_character_loops(match):
     # or could be l33ted, to figure out how many permutations of l33ts the
     # word has
     potential_swaps = len([l for l in alpha_only if l in L33T_CHARACTERS.keys()]) \
-                    + len(match['swap'])
+                    + len(sequence['swap'])
 
     # Once number of potential permutations for each word has been calculated
     # figures out how many times the tool would need to loop through the
     # dictionaries to find the right combination
     dictionary_loops = 0
-    for k in range(1, len(match['swap']) + 1):
+    for k in range(1, len(sequence['swap']) + 1):
         if k == potential_swaps:
             dictionary_loops += (combination_count(potential_swaps, k) / 2)
         else:

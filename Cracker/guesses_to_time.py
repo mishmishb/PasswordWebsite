@@ -32,7 +32,9 @@ def display_time(seconds):
 def calc_time(guesses):
     ''' Takes the number of guesses and returns the amount of time
     it would take to make this many calculations based on different
-    situations. '''
+    situations. 
+    sourced from: https://github.com/dropbox/zxcvbn/blob/master/src/time_estimates.coffee 
+    '''
 
     online_throttled = display_time(guesses / (1 / 36))
 
