@@ -68,7 +68,7 @@ def dictionary_finder(password, ranked_wordlists):
     return found_words
 
 
-def generate_l33t_list(password, l33t_list):
+def generate_l33t_dict(password, l33t_dict):
     ''' Inspects the non-alpha characters in the password and returns a list of
     letters for potential character swaps'''
 
@@ -81,13 +81,13 @@ def generate_l33t_list(password, l33t_list):
         # Creates list of letters that might have been swapped
         # for a non-alpha character.
         swapped_letters = [
-            lettrs for lettrs, l33ts in l33t_list.items() if n_a in l33ts
+            lettrs for lettrs, l33ts in l33t_dict.items() if n_a in l33ts
             ]
         if swapped_letters:
             swaps[n_a] = swapped_letters
 
     # Returns dictionary of the non-alpha characters and their
-    # corresponding letters as per l33t_list.
+    # corresponding letters as per l33t_dict.
     return swaps
 
 
@@ -98,14 +98,14 @@ def l33t_finder(password, ranked_wordlists):
     found_words = []
 
     # Generates l33t list from password string.
-    l33t_list = generate_l33t_list(password, L33T_CHARACTERS)
-    
+    l33t_dict = generate_l33t_dict(password, L33T_CHARACTERS)
+
     # Generates a list with potential swaps grouped together.
     # e.g. te5t -> ['t', 'e', ['s', 'z'], 't']
     password_options = []
-    for position, value in enumerate(password):
+    for value in password:
         is_l33t = False
-        for l33t, letter in l33t_list.items():
+        for l33t, letter in l33t_dict.items():
             if l33t == value:
                 password_options.append(letter)
                 is_l33t = True
@@ -130,15 +130,15 @@ def l33t_finder(password, ranked_wordlists):
                 if sequence.lower() == word['found_word']:
                     continue
 
+                # Ensures only the correct numbers/symbols are accounted for
                 swap = {}
-                for l33t, letter in l33t_list.items():
-                    swap_list = []
-                    if l33t in sequence:
-                        for l in letter:
-                            if l not in sequence:
-                                swap_list.extend(l)
-                        if swap_list:
-                            swap[l33t] = swap_list
+                for l33t, letter in l33t_dict.items():
+                    swap_list = [
+                        word['found_word'][pos] 
+                        for pos, char in enumerate(sequence) if l33t == char
+                        ]
+                    if swap_list:
+                        swap[l33t] = swap_list
                 word['l33t'] = True
                 word['input'] = sequence
                 word['swap'] = swap
