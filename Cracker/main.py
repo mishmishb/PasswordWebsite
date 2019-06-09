@@ -18,12 +18,14 @@ def mystrengthtool(input_password):
 
 
     ranked_wordlists = word_extraction.dictionary_ranker()
-    extracted_words = word_extraction.word_finder(input_password, ranked_wordlists)
+    extracted_words = word_extraction.word_finder(
+        input_password, ranked_wordlists
+    )
     sequence = find_sequence.make_sequence(input_password, extracted_words)
     no_of_guesses = calculate_guesses.guess_calculator(sequence)
     password_advice = advice.advice_generator(input_password, sequence)
-    ctime = guesses_to_time.calc_time(no_of_guesses)
-    return [no_of_guesses, sequence, password_advice, ctime]
+    crack_time = guesses_to_time.calculate_crack_time(no_of_guesses)
+    return [no_of_guesses, sequence, password_advice, crack_time]
 
 
 
@@ -37,16 +39,21 @@ if __name__ == '__main__':
 
     END = time()
 
+    # Number of guesses
     print('No of guesses:\t', RESULTS[0])
+
+    # The sequence of words/brute-force strings in the password
     print('Sequence:\t')
     for i in RESULTS[1]:
         print(i, '\n')
 
+    # Advice on how to improve the password
     print('Advice:\t')
     for k, v in RESULTS[2].items():
         print(k, v)
 
-    print('ctime:\t')
+    # Time to crack the password
+    print('Crack time:\t')
     for k, v in RESULTS[3].items():
         print(k, v)
 
