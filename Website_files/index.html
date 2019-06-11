@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<script type="module">import * as main from './__target__/main.js'; window.main = main;</script>
+<script>window.onload = function() {document.getElementById('my_input').value = '';}</script>   
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,900" rel="stylesheet">
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class='Container'>
+        <div class='OpeningPage'>
+            <div class='OpeningHeader'>
+                Your passwords aren't as secure as you think they are.
+                However, we can change that.
+            </div>
+            <div class='Continue'>
+                Scroll to continue...
+            </div>
+        </div>
+        <div class='Page'>
+            <h1>Creating an effective password.</h1>
+            <br>
+            <h2>A study conducted in 2016 (Shen, et al.) demonstrated that the average password length
+                is now over 9 characters. While this sounds good, an incredible 83% of the passwords
+                studied were derived from meaningful data.
+            </h2>
+            <br>
+            <h2>The use of words and names comes from a need to remember increasingly long passwords.
+                The irony is that we need to make our passwords longer so they are more secure, but then
+                to remember long passwords we need to use words, which undoes the extra security!
+            </h2>
+            <br>
+            <h1>However, there is another way: the mnemonic sentence technique</h1>
+            <br>
+            <h2>This technique involves choosing a memorable phrase (the longer the better) and taking the first letter
+                of each word to make a mnemonic device. Certain letters should then be replaced with numbers and symbols
+                to create a seemingly random sequence.
+            </h2>
+            <br>
+            <h2>For example: "The person who uses this technique will surely have a better password!" could become
+                "tPwuttwsh4bp!"
+            </h2>
+            <br>
+            <h1>Try running your passwords through the strength checker below, and then compare that to
+                using the mnemonic technique described. Don't worry, everything is client side so no information
+                is sent to a server.
+            </h1>
+        </div>
+        <div class='Page'>
+            <div class='DictionaryCheck'>
+                <h1>Password Strength Check</h1>
+                <input type="text" id="my_input" oninput="main.main_checker()"/>
+
+                <p id="final_output"></p>
+
+                <p id="number_of_guesses"></p>
+
+                <p id="selected_sequence"></p>
+
+                <p id="password_advice"></p>
+
+                <p id="crack_times"></p>
+
+                <p id="total_time"></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

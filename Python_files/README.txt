@@ -1,0 +1,1 @@
+To run file, execute "python3 main.py" from a terminal
